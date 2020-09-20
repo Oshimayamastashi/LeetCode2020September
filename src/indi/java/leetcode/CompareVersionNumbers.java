@@ -1,56 +1,50 @@
 package indi.java.leetcode;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
- * TODO: too slow, need improve 2020/9/10, Java
+ * Medium, Runtime: 1 ms(91.48%) Memory Usage: 37.5 MB(44.17%)
  */
 public class CompareVersionNumbers {
 
-	public static void main(String[] args) {
-		System.out.println(compareVersion("0.1", "1.1"));
-	}
+	public int compareVersion(String version1, String version2) {
+		int i1 = 0;
+		int i2 = 0;
 
-	public static int compareVersion(String version1, String version2) {
-		List<Integer> versions1 = getVersionList(version1);
-		List<Integer> versions2 = getVersionList(version2);
+		while (i1 < version1.length() || i2 < version2.length()) {
 
-		int size = versions1.size() > versions2.size() ? versions1.size() : versions2.size();
+			StringBuilder v1 = new StringBuilder();
+			StringBuilder v2 = new StringBuilder();
 
-		for (int i = 0; i < size; i++) {
-			Integer v1 = 0;
-			Integer v2 = 0;
-
-			while (i < versions1.size()) {
-
+			while (i1 < version1.length() && version1.charAt(i1) != '.') {
+				v1.append(version1.charAt(i1));
+				i1++;
 			}
 
-//			Integer v1 = getVersionByIndex(versions1, i);
-//			Integer v2 = getVersionByIndex(versions2, i);
+			while (i2 < version2.length() && version2.charAt(i2) != '.') {
+				v2.append(version2.charAt(i2));
+				i2++;
+			}
 
-			if (v1 > v2) {
+			int v11 = getVersion(v1);
+			int v22 = getVersion(v2);
+
+			if (v11 > v22) {
 				return 1;
-			} else if (v1 < v2) {
+			} else if (v11 < v22) {
 				return -1;
 			}
+
+			i1++;
+			i2++;
 		}
 
 		return 0;
 	}
 
-	private static Integer getVersionByIndex(List<Integer> versions, int index) {
-
-		if (versions.size() > index) {
-			return versions.get(index);
+	private Integer getVersion(StringBuilder sb) {
+		if (sb.toString().equals("")) {
+			return 0;
 		}
 
-		return 0;
-	}
-
-	private static List<Integer> getVersionList(String version) {
-
-		return Arrays.stream(version.split("\\.")).map(Integer::parseInt).collect(Collectors.toList());
+		return Integer.parseInt(sb.toString());
 	}
 }

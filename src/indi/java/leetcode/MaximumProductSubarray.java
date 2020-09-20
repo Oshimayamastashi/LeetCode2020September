@@ -1,48 +1,33 @@
 package indi.java.leetcode;
 
 /**
- * TODO: Not Finish
- *
+ * Medium, Runtime: 1 ms(91.46%) Memory Usage: 39.6 MB(37.65%)
  */
 public class MaximumProductSubarray {
 
-	public static void main(String[] args) {
-		int[] arr = { 0, -7, 0, -8, 0 };
-		System.out.println(maxProduct(arr));
+	public int maxProduct(int[] nums) {
 
-	}
+		if (nums.length < 1) {
+			return 0;
+		}
 
-	public static int maxProduct(int[] nums) {
-		int max = Integer.MIN_VALUE;
+		int max = nums[0];
 
 		int curMin = 1;
 		int curMax = 1;
-		boolean flag = false;
 
 		for (int i = 0; i < nums.length; i++) {
-			if (nums[i] > 0) {
-				curMax *= nums[i];
-				curMin = Math.min(curMin * nums[i], 1);
-				flag = true;
-			} else if (nums[i] < 0) {
+			if (nums[i] < 0) {
 				int temp = curMax;
-				curMax = Math.max(curMin * nums[i], 1);
-				curMin = temp * nums[i];
-			} else {
-				curMin = 1;
-				curMax = 1;
+				curMax = curMin;
+				curMin = temp;
 			}
 
-			if (max < curMax) {
-				max = curMax;
-			}
-		}
-
-		if (!flag && max == 1) {
-			return 0;
+			curMax = Math.max(curMax * nums[i], nums[i]);
+			curMin = Math.min(curMin * nums[i], nums[i]);
+			max = Math.max(curMax, max);
 		}
 
 		return max;
 	}
-
 }
